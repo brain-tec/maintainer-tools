@@ -54,6 +54,12 @@ LICENSE_BADGES = {
         'http://www.gnu.org/licenses/gpl-3.0-standalone.html',
         'License: GPL-3',
     ),
+    'OPL-1': (
+        'https://img.shields.io/badge/license-OPL--1-blue',
+        'https://www.odoo.com/documentation/user/13.0/legal/licenses/'
+        'licenses.html#odoo-apps',
+        'License: OPL-1',
+    )
 }
 
 DEVELOPMENT_STATUS_BADGES = {
@@ -131,7 +137,7 @@ def make_weblate_badge(repo_name, branch, addon_name):
 def make_repo_badge(org_name, repo_name, branch, addon_name):
     badge_repo_name = repo_name.replace('-', '--')
     return (
-        'https://img.shields.io/badge/github-{org_name}%2F{badge_repo_name}'
+        'https://img.shields.io/badge/github-{badge_repo_name}'
         '-lightgray.png?logo=github'.format(**locals()),
         'https://github.com/{org_name}/{repo_name}/tree/'
         '{branch}/{addon_name}'.format(**locals()),
