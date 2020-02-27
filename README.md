@@ -6,8 +6,9 @@
 ## Generate README file
 There is no need to install this repository. 
 
-In order to get it working, you need to have in your module a folder "readme" with content following the instructions in https://github.com/OCA/maintainer-tools/blob/master/template/module/README.rst
-https://github.com/OCA/maintainer-tools/tree/master/template/module/readme
+In order to get it working, you need to have in your module a folder "readme" with content following the instructions in 
+* https://github.com/OCA/maintainer-tools/blob/master/template/module/README.rst
+* https://github.com/OCA/maintainer-tools/tree/master/template/module/readme
 
 Apart from that, you need to have this repository already cloned, and use it as follows:
 
