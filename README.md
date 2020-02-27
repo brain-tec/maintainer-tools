@@ -3,6 +3,25 @@
 
 # OCA Maintainers Tools
 
+## Generate README file
+There is no need to install this repository. 
+
+In order to get it working, you need to have in your module a folder "readme" with content following the instructions in https://github.com/OCA/maintainer-tools/blob/master/template/module/README.rst
+https://github.com/OCA/maintainer-tools/tree/master/template/module/readme
+
+Apart from that, you need to have this repository already cloned, and use it as follows:
+
+python3 -m maintainer-tools.tools.gen_addon_readme --org-name "brain-tec" --addon-dir "`absolute_path_to_your_module`" --repo-name "`project_name`" --no-commit --branch `project_branch`
+
+You just need to specify 3 things:
+- `absolute_path_to_your_module`: Absolute path to your module in your local environment
+- `project_name`: Name of the project or git repository
+- `project_branch`: Branch in which you have the code
+
+This will automatically create a file README.rst in your module
+If you would like to create an index.html file for your module accordinly, put also the option --gen-html.
+It could be also useful for debugging purposes to check the result of the script according to your content. 
+
 ## Installation
 
     $ git clone git@github.com:OCA/maintainers-tools.git
