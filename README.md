@@ -4,13 +4,17 @@
 # OCA Maintainers Tools
 
 ## Generate README file
-There is no need to install this repository. 
+There is no need to install this repository. Please, just follow the instructions of this section of this document.
 
 In order to get it working, you need to have in your module a folder "readme" with content following the instructions in 
 * https://github.com/OCA/maintainer-tools/blob/master/template/module/README.rst
 * https://github.com/OCA/maintainer-tools/tree/master/template/module/readme
 
-Apart from that, you need to have this repository already cloned, and use it as follows:
+Apart from that, you need to have this repository already cloned and install click python package
+git clone -b BT git@github.com:brain-tec/maintainer-tools.git
+pip3 install click
+
+Then use it as follows, from the parent folder to that in which you have maintainer-tools
 
 python3 -m maintainer-tools.tools.gen_addon_readme --org-name "brain-tec" --addon-dir "`absolute_path_to_your_module`" --repo-name "`project_name`" --no-commit --branch `project_branch`
 
