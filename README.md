@@ -11,8 +11,9 @@ In order to get it working, you need to have in your module a folder "readme" wi
 * https://github.com/OCA/maintainer-tools/tree/master/template/module/readme
 
 Apart from that, you need to have this repository already cloned and install click python package
-git clone -b BT git@github.com:brain-tec/maintainer-tools.git
-pip3 install click
+
+* git clone -b BT git@github.com:brain-tec/maintainer-tools.git
+* pip3 install click
 
 Then use it as follows, from the parent folder to that in which you have maintainer-tools
 
