@@ -14,6 +14,7 @@ Apart from that, you need to have this repository already cloned and install cli
 
 * git clone -b BT git@github.com:brain-tec/maintainer-tools.git
 * pip3 install click
+* pip3 install docutils
 
 Then use it as follows, from the parent folder to that in which you have maintainer-tools
 
