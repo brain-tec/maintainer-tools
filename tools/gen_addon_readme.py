@@ -195,7 +195,7 @@ def gen_one_addon_readme(
     if org_name == 'OCA':
         runbot_id = get_runbot_ids().get(repo_name)
     badges = []
-    development_status = manifest.get('development_status', 'Beta').lower()
+    development_status = manifest.get('development_status', '').lower()
     if development_status in DEVELOPMENT_STATUS_BADGES:
         badges.append(DEVELOPMENT_STATUS_BADGES[development_status])
     license = manifest.get('license')
