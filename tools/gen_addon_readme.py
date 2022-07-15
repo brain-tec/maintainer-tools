@@ -298,6 +298,10 @@ def gen_addon_readme(
     existing README.rst with content generated from the template,
     fragments (DESCRIPTION.rst, USAGE.rst, etc) and the addon manifest.
     """
+
+    if org_name == 'braintec':
+        org_name = 'brain-tec'
+
     addons = []
     if addons_dir:
         addons.extend(find_addons(addons_dir))
