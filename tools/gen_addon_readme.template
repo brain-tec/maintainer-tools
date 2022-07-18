@@ -74,21 +74,19 @@ Maintainers
 ~~~~~~~~~~~
 {%- if org_name == 'brain-tec' %}
 
-This module is maintained by bt-group.
+This module is maintained by braintec.
 
-.. image:: https://raw.githubusercontent.com/brain-tec/static/master/img/bt_logo_readme.png
-   :alt: bt-group
+.. image:: https://raw.githubusercontent.com/brain-tec/static/master/img/braintec_logo_readme.png
+   :alt: braintec
    :width: 150px
-   :target: https://www.braintec-group.com/en-us
+   :target: https://braintec.com
 
-bt-group is a is an independent international software and consulting company considered as one of the
-best Odoo partners worldwide, being already awarded several times as Best Odoo Partner in Europe.
+As Odoo Gold Partner and Best Partner Europe 2016, 2020, 2021, we develop business software solutions that are
+high-value and efficient.
 
-Since its founding in 2000, they have supported small to large companies with
-the introduction and implementation of business software projects from their locations
-in Switzerland, Germany, Austria and Spain.
-
-Their goal is the commitment to a more efficient daily business routine in SMEs.
+Our 70 highly qualified employees are represented at nine locations in Switzerland, Germany, Austria and Spain.
+With our experience, methodology and the most certified Odoo experts worldwide, we have successfully supported
+over 300 companies in their digital transformation since 2000.
 {%- endif %}
 
 {%- if org_name == 'OCA' %}
