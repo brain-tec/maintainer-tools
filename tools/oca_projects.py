@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# License AGPLv3 (http://www.gnu.org/licenses/agpl-3.0-standalone.html)
+# License AGPLv3 (https://www.gnu.org/licenses/agpl-3.0-standalone.html)
 """
 Data about OCA Projects, with a few helper functions.
 
@@ -72,16 +72,18 @@ OCA_PROJECTS = {
                             'crm',
                             'partner-contact',
                             'sale-financial',
+                            'sale-promotion',
                             'sale-reporting',
                             'commission',
                             'event',
                             'survey',
                             ],
-    'document': ['knowledge'],
+    'document': ['knowledge', 'dms'],
     'ecommerce': ['e-commerce'],
     'edi': ['edi'],
     'field-service': ['field-service'],
     'financial control': ['margin-analysis'],
+    'fleet': ['fleet'],
     'Infrastructure': ['infrastructure-dns'],
     'geospatial': ['geospatial'],
     'hr': ['timesheet',
@@ -154,6 +156,7 @@ OCA_PROJECTS = {
                       'manufacture-reporting',
                       ],
     'management system': ['management-system'],
+    'pms': ['pms'],
     'purchase': ['purchase-workflow',
                  'purchase-reporting',
                  ],
@@ -188,6 +191,7 @@ OCA_PROJECTS = {
               'interface-github',
               'iot',
               'rest-framework',
+              'role-policy',
               ],
     'vertical association': ['vertical-association'],
     'vertical hotel': ['vertical-hotel'],
@@ -199,7 +203,8 @@ OCA_PROJECTS = {
                      # XXX
                      ],
     'vertical construction': ['vertical-construction'],
-    'vertical real state': ['vertical-realstate'],
+    'vertical real estate': ['vertical-realestate'],
+    'vertical rental': ['vertical-rental'],
     'vertical travel': ['vertical-travel'],
     'web': ['web'],
     'website': ['website',
@@ -241,6 +246,7 @@ OCA_REPOSITORY_NAMES.sort()
 _OCA_REPOSITORY_NAMES = set(OCA_REPOSITORY_NAMES)
 
 _URL_MAPPINGS = {'git': 'git@github.com:%s/%s.git',
+                 'ssh': 'ssh://git@github.com/%s/%s.git',
                  'https': 'https://github.com/%s/%s.git',
                  }
 
@@ -257,7 +263,7 @@ class BranchNotFoundError(RuntimeError):
 
 
 @contextmanager
-def temporary_clone(project_name, branch, protocol='git', org_name='OCA'):
+def temporary_clone(project_name, branch=None, protocol='git', org_name='OCA'):
     """ context manager that clones a git branch and cd to it, with cache """
     # init cache directory
     cache_dir = appdirs.user_cache_dir('oca-mqt')
@@ -274,19 +280,25 @@ def temporary_clone(project_name, branch, protocol='git', org_name='OCA'):
         'refs/heads/*:refs/heads/*',
     ]
     subprocess.check_call(fetch_cmd, cwd=repo_cache_dir)
-    # check if branch exist
-    branches = subprocess.check_output(
-        ['git', 'branch'], universal_newlines=True, cwd=repo_cache_dir)
-    branches = [b.strip() for b in branches.split()]
-    if branch not in branches:
-        raise BranchNotFoundError()
+    if branch:
+        # check if branch exist
+        branches = subprocess.check_output(
+            ['git', 'branch'], universal_newlines=True, cwd=repo_cache_dir)
+        branches = [b.strip() for b in branches.split()]
+        if branch not in branches:
+            raise BranchNotFoundError()
     # clone to temp dir, with --reference to cache
     tempdir = tempfile.mkdtemp()
     try:
         clone_cmd = [
             'git', 'clone', '--quiet',
             '--reference', repo_cache_dir,
-            '--branch', branch,
+        ]
+        if branch:
+            clone_cmd += [
+                '--branch', branch,
+            ]
+        clone_cmd += [
             '--',
             repo_url,
             tempdir,

@@ -1,4 +1,4 @@
-# License AGPLv3 (http://www.gnu.org/licenses/agpl-3.0-standalone.html)
+# License AGPLv3 (https://www.gnu.org/licenses/agpl-3.0-standalone.html)
 import os
 import setuptools
 
@@ -13,23 +13,22 @@ setuptools.setup(
     author='Odoo Community Association (OCA)',
     description='Set of tools to help managing Odoo Community projects',
     long_description=long_description,
-    license='APGL3',
+    license='AGPL3',
     packages=['tools'],
     include_package_data=True,
+    zip_safe=False,
     use_scm_version=True,
     setup_requires=[
         'setuptools_scm',
     ],
     install_requires=[
         'appdirs',
-        'argparse',
-        'autopep8',
         'click',
         'configparser',  # for python2 compat
         # We need to pin docutils version, see
         # https://github.com/OCA/maintainer-tools/issues/423
         # Consider carefully before changing this.
-        'docutils>=0.15.1,<0.15.1.1',
+        'docutils==0.16.*',
         'ERPpeek',
         'github3.py>=1',
         'inflection',
@@ -38,10 +37,13 @@ setuptools.setup(
         'polib',
         'pygments',
         'requests',
+        'toml>=0.10.0',  # for oca-towncrier
+        'towncrier>=21.3',  # for oca-towncrier
+        'selenium',
         'twine',
         'wheel',
     ],
-    python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*',
+    python_requires='>=3.6',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Console',
@@ -60,13 +62,19 @@ setuptools.setup(
             'oca-set-repo-labels = tools.set_repo_labels:main',
             'oca-odoo-login = tools.odoo_login:main',
             'oca-sync-users = tools.oca_sync_users:main',
-            'oca-autopep8 = tools.autopep8_extended:main',
             'oca-gen-addons-table = tools.gen_addons_table:gen_addons_table',
             'oca-migrate-branch = tools.migrate_branch:main',
             'oca-migrate-branch-empty = tools.migrate_branch_empty:main',
-            'oca-pypi-upload = tools.pypi_upload:cli',
+            'oca-publish-modules = tools.publish_modules:main',
             'oca-gen-addon-readme = tools.gen_addon_readme:gen_addon_readme',
             'oca-gen-addon-icon = tools.gen_addon_icon:gen_addon_icon',
+            'oca-towncrier = tools.oca_towncrier:oca_towncrier',
+            'oca-create-migration-issue = tools.create_migration_issue:main',
+            'oca-update-pre-commit-excluded-addons = '
+            'tools.update_pre_commit_excluded_addons:main',
+            'oca-fix-manifest-website = tools.fix_manifest_website:main',
+            'oca-configure-travis= tools.configure_travis:main',
+            'oca-create-branch = tools.create_branch:main',
         ],
     },
 )

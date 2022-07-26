@@ -1,4 +1,4 @@
-# License AGPLv3 (http://www.gnu.org/licenses/agpl-3.0-standalone.html)
+# License AGPLv3 (https://www.gnu.org/licenses/agpl-3.0-standalone.html)
 
 import os
 import subprocess
@@ -27,3 +27,11 @@ def test_1():
     finally:
         with open(readme_filename, 'w') as f:
             f.write(readme_before)
+
+
+def test_absent_readme(tmp_path):
+    """gen_addons_table must not fail if README.md is absent"""
+    res = subprocess.call([
+        sys.executable, "-m", "tools.gen_addons_table"
+    ], cwd=str(tmp_path))
+    assert res == 0

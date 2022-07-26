@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# License AGPLv3 (http://www.gnu.org/licenses/agpl-3.0-standalone.html)
+# License AGPLv3 (https://www.gnu.org/licenses/agpl-3.0-standalone.html)
 from __future__ import absolute_import, print_function
 
 import argparse
@@ -11,7 +11,7 @@ from . config import read_config, write_config
 
 
 ODOO_URL = os.environ.get('ODOO_URL', 'https://odoo-community.org')
-ODOO_DB = os.environ.get('ODOO_DB', 'odoo_community_v11')
+ODOO_DB = os.environ.get('ODOO_DB', 'odoo_community_prod')
 
 
 def login(username, store):

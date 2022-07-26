@@ -176,3 +176,10 @@
 288|github.com/OCA/hr-attendance
 289|github.com/OCA/hr-expense
 290|github.com/OCA/hr-holidays
+291|github.com/OCA/fleet
+292|github.com/OCA/dms
+293|github.com/OCA/pms
+294|github.com/OCA/role-policy
+295|github.com/OCA/odoo-pim
+296|github.com/OCA/sale-promotion
+298|github.com/OCA/vertical-rental

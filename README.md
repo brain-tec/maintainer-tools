@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/OCA/maintainers-tools.svg?branch=master)](https://travis-ci.org/OCA/maintainers-tools)
-[![Coverage Status](https://img.shields.io/coveralls/OCA/maintainers-tools.svg)](https://coveralls.io/r/OCA/maintainers-tools?branch=master)
+[![CI](https://github.com/OCA/maintainer-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/OCA/maintainer-tools/actions/workflows/ci.yml)
+[![Coverage Status](https://img.shields.io/coveralls/OCA/maintainer-tools.svg)](https://coveralls.io/r/OCA/maintainer-tools?branch=master)
 
 # OCA Maintainers Tools
 
@@ -31,11 +31,15 @@ It could be also useful for debugging purposes to check the result of the script
 
 ## Installation
 
-    $ git clone git@github.com:OCA/maintainers-tools.git
-    $ cd maintainers-tools
+    $ git clone git@github.com:OCA/maintainer-tools.git
+    $ cd maintainer-tools
     $ virtualenv env
     $ . env/bin/activate
     $ python setup.py install
+
+Alternatively if using pipx.
+
+    $ pipx install oca-maintainers-tools@git+https://github.com/OCA/maintainer-tools.git
 
 ## OCA repositories tools
 
@@ -135,6 +139,16 @@ You may also use this script for your own repositories by specifying this
 additional argument `--org-name=myorganisation`
 
 
+### Changelog generator using towncrier
+
+To facilitate the generation of the changelog of addons, we have a
+small wrapper around [towncrier](https://pypi.org/project/towncrier/).
+For example, this will update HISTORY.rst for `mis_builder` and `mis_builder_budget`
+with the version found in their manifest:
+
+    $ oca-towncrier --repo=mis-builder --addon-dir=mis_builder --addon-dir=mis_builder_budget --commit
+
+
 ### Icon generator
 
 To provide an icon for our modules we generate them automatically.
@@ -143,30 +157,9 @@ To generate the icon for the module `auth_keycloak`:
 
     $ oca-gen-addon-icon --addon-dir=auth_keycloak
 
+A custom icon can be added using the `--src-icon` argument:
 
-### Auto fix pep8 guidelines
-
-To auto fix pep8 guidelines of your code you can run:
-
-    $ oca-autopep8 -ri PATH
-
-This script overwrite with monkey patch the original script of [autopep8](https://github.com/hhatto/autopep8)
-to support custom code refactoring.
-
-* List of errors added:
-
-    - `CW0001` Class name with snake_case style found, should use CamelCase.
-    - `CW0002` Delete vim comment.
-
-More info of original autopep8 [here](https://pypi.python.org/pypi/autopep8/)
-
-You can rename snake_case to CamelCase with next command:
-
-    $ oca-autopep8 -ri --select=CW0001 PATH
-
-You can delete vim comment
-
-    $ oca-autopep8 -ri --select=CW0002,W391 PATH
+    $ oca-gen-addon-icon --addon-dir=auth_keycloak --src-icon=/path/to/custom/icon.png
 
 
 ## Developers
@@ -174,8 +167,8 @@ You can delete vim comment
 As a developer, you want to launch the scripts without installing the
 egg.
 
-    $ git clone git@github.com:OCA/maintainers-tools.git
-    $ cd maintainers-tools
+    $ git clone git@github.com:OCA/maintainer-tools.git
+    $ cd maintainer-tools
     $ virtualenv env
     $ . env/bin/activate
     $ pip install -e .

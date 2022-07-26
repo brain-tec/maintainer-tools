@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #  -*- coding: utf-8 -*-
-# License AGPLv3 (http://www.gnu.org/licenses/agpl-3.0-standalone.html)
+# License AGPLv3 (https://www.gnu.org/licenses/agpl-3.0-standalone.html)
 """
 This script replaces markers in the README.md file
 of an OCA repository with the list of addons present
@@ -50,6 +50,15 @@ def render_markdown_table(header, rows):
     return '\n'.join(table)
 
 
+def render_maintainers(manifest):
+    maintainers = manifest.get('maintainers') or []
+    return " ".join([
+        "[![{maintainer}]"
+        "(https://github.com/{maintainer}.png?size=30px)]"
+        "(https://github.com/{maintainer})".format(maintainer=x)
+        for x in maintainers])
+
+
 def replace_in_readme(readme_path, header, rows_available, rows_unported):
     with io.open(readme_path, encoding='utf8') as f:
         readme = f.read()
@@ -90,7 +99,7 @@ def replace_in_readme(readme_path, header, rows_available, rows_unported):
 @click.option('--commit/--no-commit',
               help="git commit changes to README.rst, if any.")
 @click.option('--readme-path', default="README.md",
-              type=click.Path(dir_okay=False, file_okay=True, exists=True),
+              type=click.Path(dir_okay=False, file_okay=True),
               help="README.md file with addon table markers")
 @click.option('--addons-dir', default=".",
               type=click.Path(dir_okay=True, file_okay=False, exists=True),
@@ -111,7 +120,7 @@ def gen_addons_table(commit, readme_path, addons_dir):
             addon_paths.append((addon_path, True))
     addon_paths = sorted(addon_paths, key=lambda x: x[0])
     # load manifests
-    header = ('addon', 'version', 'summary')
+    header = ('addon', 'version', 'maintainers', 'summary')
     rows_available = []
     rows_unported = []
     for addon_path, unported in addon_paths:
@@ -134,9 +143,18 @@ def gen_addons_table(commit, readme_path, addons_dir):
                                 'installable.' % addon_path)
                 installable = False
             if installable:
-                rows_available.append((link, version, summary))
+                rows_available.append((
+                    link,
+                    version,
+                    render_maintainers(manifest),
+                    summary))
             else:
-                rows_unported.append((link, version + ' (unported)', summary))
+                rows_unported.append((
+                    link,
+                    version + ' (unported)',
+                    render_maintainers(manifest),
+                    summary
+                ))
     # replace table in README.md
     replace_in_readme(readme_path, header, rows_available, rows_unported)
     if commit:
