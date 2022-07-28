@@ -15,6 +15,7 @@ from jinja2 import Template
 from .gitutils import commit_if_needed
 from .manifest import read_manifest, find_addons, NoManifestFound
 from .runbot_ids import get_runbot_ids
+from .gen_addon_icon import gen_addon_icon
 
 if sys.version_info[0] < 3:
     # python 2 import
@@ -299,8 +300,12 @@ def gen_one_addon_index(readme_filename):
               help="git commit changes to README.rst, if any.")
 @click.option('--gen-html/--no-gen-html', default=True,
               help="Generate index html file.")
+@click.option('--add-bt-icon', is_flag=True,
+              help="Download and add the braintec logo as app icon.")
+@click.pass_context
 def gen_addon_readme(
-        org_name, repo_name, branch, addon_dirs, addons_dir, commit, gen_html):
+        ctx, org_name, repo_name, branch, addon_dirs, addons_dir, commit,
+        gen_html, add_bt_icon):
     """ Generate README.rst from fragments.
 
     Do nothing if readme/DESCRIPTION.rst is absent, otherwise overwrite
@@ -310,6 +315,11 @@ def gen_addon_readme(
 
     if org_name == 'braintec':
         org_name = 'brain-tec'
+
+    if add_bt_icon:
+        ctx.invoke(
+            gen_addon_icon, addon_dirs=addon_dirs, addons_dir=addons_dir,
+            src_icon=False, commit=commit, add_bt_icon=add_bt_icon)
 
     addons = []
     if addons_dir:

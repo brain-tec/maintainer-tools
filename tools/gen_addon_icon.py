@@ -5,6 +5,8 @@
 import os
 import shutil
 import click
+import requests
+import tempfile
 
 from .gitutils import commit_if_needed
 from .manifest import read_manifest, find_addons, NoManifestFound
@@ -35,6 +37,18 @@ def gen_one_addon_icon(icon_dir, src_icon=None, filetype=ICON_TYPE):
     return None
 
 
+def download_icon():
+    url = "https://raw.githubusercontent.com/brain-tec/static/master/img/" \
+          "braintec_app_icon.png"
+    request = requests.get(url)
+    request.raise_for_status()
+
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(request.content)
+        src_icon = tmp.name
+    return src_icon
+
+
 @click.command()
 @click.option('--addon-dir', 'addon_dirs',
               type=click.Path(dir_okay=True, file_okay=False, exists=True),
@@ -51,12 +65,19 @@ def gen_one_addon_icon(icon_dir, src_icon=None, filetype=ICON_TYPE):
                    "OCA template icon.")
 @click.option('--commit/--no-commit',
               help="git commit icon, if not any.")
-def gen_addon_icon(addon_dirs, addons_dir, src_icon, commit):
+@click.option('--add-bt-icon', is_flag=True,
+              help="Download and add the braintec logo as app icon. If "
+                   "--add-bt-icon is set, it will override the --src-icon "
+                   "option.")
+def gen_addon_icon(addon_dirs, addons_dir, src_icon, commit, add_bt_icon):
     """ Put default OCA icon of type ICON_TYPE.
 
     Do nothing if the icon already exists in ICONS_DIR, otherwise put
     the default icon.
     """
+    if add_bt_icon:
+        src_icon = download_icon()
+
     addons = []
     if addons_dir:
         addons.extend(find_addons(addons_dir))
@@ -79,7 +100,7 @@ def gen_addon_icon(addon_dirs, addons_dir, src_icon, commit):
                 # icon was created manually
                 exist = True
                 break
-        if exist:
+        if exist and not add_bt_icon:
             continue
         icon_filename = gen_one_addon_icon(icon_dir, src_icon=src_icon)
         if icon_filename:
