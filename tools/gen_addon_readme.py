@@ -145,6 +145,26 @@ def make_repo_badge(org_name, repo_name, branch, addon_name):
         '{org_name}/{repo_name}'.format(**locals()),
     )
 
+def keep_coverage_badge(addon_dir, addon_name):
+    module_readme_path = "{}/README.rst".format(addon_dir)
+    if not os.path.exists(module_readme_path):
+        print("README file for module {} not found {}".format(addon_name, module_readme_path))
+    else:
+        with open(module_readme_path, "r") as f:
+            module_readme_content = f.read()
+
+        pattern = r'\.\. \|badge3\| image:: (.+)\n\s+:alt: (.+)'
+        match = re.search(pattern, module_readme_content)
+
+        if match:
+            image = match.group(1)
+            alt = match.group(2)
+            return (
+                image.format(**locals()),
+                False,
+                alt.format(**locals())
+            )
+    return False
 
 def generate_fragment(org_name, repo_name, branch, addon_name, file):
     fragment_lines = file.readlines()
@@ -203,6 +223,9 @@ def gen_one_addon_readme(
     if license in LICENSE_BADGES:
         badges.append(LICENSE_BADGES[license])
     badges.append(make_repo_badge(org_name, repo_name, branch, addon_name))
+    coverage_badge = keep_coverage_badge(addon_dir, addon_name)
+    if coverage_badge:
+        badges.append(coverage_badge)
     if org_name == 'OCA':
         badges.append(make_weblate_badge(repo_name, branch, addon_name))
     if runbot_id:
