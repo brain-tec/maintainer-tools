@@ -18,7 +18,9 @@
 
 {% for (image, target, alt) in badges -%}
 .. |badge{{ loop.index }}| image:: {{ image }}
+    {%- if target %}
     :target: {{ target or '#' }}
+    {%- endif %}
     {%- if alt %}
     :alt: {{ alt }}
     {%- endif %}
@@ -127,4 +129,3 @@ You are welcome to contribute. To learn how please visit https://odoo-community.
 You are welcome to contribute.
 
 {%- endif %}
-
