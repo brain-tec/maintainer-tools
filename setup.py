@@ -24,14 +24,12 @@ setuptools.setup(
     install_requires=[
         "appdirs",
         "click",
-        "configparser",  # for python2 compat
         # We need to pin docutils version, see
         # https://github.com/OCA/maintainer-tools/issues/423
         # Consider carefully before changing this.
         "docutils==0.16.*",
         "ERPpeek",
         "github3.py>=1",
-        "inflection",
         "jinja2",
         "PyYAML",
         "polib",
