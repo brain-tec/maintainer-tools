@@ -48,6 +48,15 @@
 {{- fragment('DEVELOP', 'Development') }}
 {{- fragment('ROADMAP', 'Known issues / Roadmap') -}}
 {{- fragment('HISTORY', 'Changelog') -}}
+
+{% if coverage_trend -%}
+Coverage Trend
+==============
+
+{{ coverage_trend }}
+
+{%- endif %}
+
 Bug Tracker
 ===========
 
