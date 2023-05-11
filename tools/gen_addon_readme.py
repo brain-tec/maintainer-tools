@@ -166,6 +166,22 @@ def keep_coverage_badge(addon_dir, addon_name):
             )
     return False
 
+def keep_coverage_trend(addon_dir, addon_name):
+    module_readme_path = "{}/README.rst".format(addon_dir)
+    if not os.path.exists(module_readme_path):
+        print("README file for module {} not found {}".format(addon_name, module_readme_path))
+    else:
+        with open(module_readme_path, "r") as f:
+            module_readme_content = f.read()
+
+        image_block_pattern = re.compile(r'(\.\. image:: (https://quickchart\.io/chart.*?)\n   \:height: \d+)',
+                                         re.DOTALL)
+        match = image_block_pattern.search(module_readme_content)
+        if match:
+            print(match.group())
+            return match.group()
+    return False
+
 def generate_fragment(org_name, repo_name, branch, addon_name, file):
     fragment_lines = file.readlines()
     if not fragment_lines:
@@ -226,6 +242,7 @@ def gen_one_addon_readme(
     coverage_badge = keep_coverage_badge(addon_dir, addon_name)
     if coverage_badge:
         badges.append(coverage_badge)
+    coverage_trend = keep_coverage_trend(addon_dir, addon_name)
     if org_name == 'OCA':
         badges.append(make_weblate_badge(repo_name, branch, addon_name))
     if runbot_id:
@@ -260,6 +277,7 @@ def gen_one_addon_readme(
             repo_name=repo_name,
             runbot_id=runbot_id,
             development_status=development_status,
+            coverage_trend=coverage_trend
         ))
     return readme_filename
 
