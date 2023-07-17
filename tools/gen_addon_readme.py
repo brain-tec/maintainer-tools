@@ -34,6 +34,7 @@ FRAGMENTS = (
     'USAGE',
     'ROADMAP',
     'DEVELOP',
+    'ORIGINAL_AUTHORS',
     'CONTRIBUTORS',
     'CREDITS',
     'HISTORY',
