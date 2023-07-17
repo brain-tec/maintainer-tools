@@ -79,6 +79,7 @@ Authors
 {% endfor %}
 {% endif -%}
 
+{{ fragment('ORIGINAL_AUTHORS', 'Original Authors', sub='~') }}
 {{ fragment('CONTRIBUTORS', 'Contributors', sub='~') }}
 {{- fragment('CREDITS', 'Other credits', sub='~') -}}
 Maintainers
