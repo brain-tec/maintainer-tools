@@ -10,20 +10,17 @@ addon 1
    !! source digest: sha256:8441c7951f4b8d58081a4da50efa3d2b277415ffa4e8722c9e5b4f34049f87d5
    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-.. |badge1| image:: https://img.shields.io/badge/maturity-Beta-yellow.png
-    :target: https://odoo-community.org/page/development-status
-    :alt: Beta
-.. |badge2| image:: https://img.shields.io/badge/github-OCA%2Fserver--tools-lightgray.png?logo=github
+.. |badge1| image:: https://img.shields.io/badge/github-server--tools-lightgray.png?logo=github
     :target: https://github.com/OCA/server-tools/tree/12.0/addon1
     :alt: OCA/server-tools
-.. |badge3| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
+.. |badge2| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
     :target: https://translation.odoo-community.org/projects/server-tools-12-0/server-tools-12-0-addon1
     :alt: Translate me on Weblate
-.. |badge4| image:: https://img.shields.io/badge/runboat-Try%20me-875A7B.png
+.. |badge3| image:: https://img.shields.io/badge/runboat-Try%20me-875A7B.png
     :target: https://runboat.odoo-community.org/builds?repo=OCA/server-tools&target_branch=12.0
     :alt: Try me on Runboat
 
-|badge1| |badge2| |badge3| |badge4|
+|badge1| |badge2| |badge3|
 
 Some description
 
@@ -81,6 +78,8 @@ Version 1
 * fix this bug
 * add that feature
 
+
+
 Bug Tracker
 ===========
 
@@ -98,6 +97,7 @@ Authors
 ~~~~~~~
 
 * Acme Inc
+
 
 Contributors
 ~~~~~~~~~~~~

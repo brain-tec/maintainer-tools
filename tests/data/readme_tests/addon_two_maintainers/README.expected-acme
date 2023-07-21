@@ -10,14 +10,11 @@ addon one maintainer
    !! source digest: sha256:15ae25bf0bec4b45e93e38fb03caceac901d14dfdf33683a9d6c4fc1d8e4be8c
    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-.. |badge1| image:: https://img.shields.io/badge/maturity-Beta-yellow.png
-    :target: https://odoo-community.org/page/development-status
-    :alt: Beta
-.. |badge2| image:: https://img.shields.io/badge/github-acme%2Fserver--tools-lightgray.png?logo=github
+.. |badge1| image:: https://img.shields.io/badge/github-server--tools-lightgray.png?logo=github
     :target: https://github.com/acme/server-tools/tree/12.0/addon_two_maintainers
     :alt: acme/server-tools
 
-|badge1| |badge2|
+|badge1|
 
 Some description
 
@@ -28,6 +25,8 @@ Some description
 
 .. contents::
    :local:
+
+
 
 Bug Tracker
 ===========
@@ -46,6 +45,7 @@ Authors
 ~~~~~~~
 
 * Acme Inc
+
 
 Maintainers
 ~~~~~~~~~~~

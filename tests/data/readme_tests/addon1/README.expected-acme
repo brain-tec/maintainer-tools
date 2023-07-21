@@ -10,14 +10,11 @@ addon 1
    !! source digest: sha256:8441c7951f4b8d58081a4da50efa3d2b277415ffa4e8722c9e5b4f34049f87d5
    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-.. |badge1| image:: https://img.shields.io/badge/maturity-Beta-yellow.png
-    :target: https://odoo-community.org/page/development-status
-    :alt: Beta
-.. |badge2| image:: https://img.shields.io/badge/github-acme%2Fserver--tools-lightgray.png?logo=github
+.. |badge1| image:: https://img.shields.io/badge/github-server--tools-lightgray.png?logo=github
     :target: https://github.com/acme/server-tools/tree/12.0/addon1
     :alt: acme/server-tools
 
-|badge1| |badge2|
+|badge1|
 
 Some description
 
@@ -75,6 +72,8 @@ Version 1
 * fix this bug
 * add that feature
 
+
+
 Bug Tracker
 ===========
 
@@ -92,6 +91,7 @@ Authors
 ~~~~~~~
 
 * Acme Inc
+
 
 Contributors
 ~~~~~~~~~~~~

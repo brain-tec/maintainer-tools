@@ -10,20 +10,17 @@ addon one maintainer
    !! source digest: sha256:15ae25bf0bec4b45e93e38fb03caceac901d14dfdf33683a9d6c4fc1d8e4be8c
    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-.. |badge1| image:: https://img.shields.io/badge/maturity-Beta-yellow.png
-    :target: https://odoo-community.org/page/development-status
-    :alt: Beta
-.. |badge2| image:: https://img.shields.io/badge/github-OCA%2Fserver--tools-lightgray.png?logo=github
+.. |badge1| image:: https://img.shields.io/badge/github-server--tools-lightgray.png?logo=github
     :target: https://github.com/OCA/server-tools/tree/12.0/addon_two_maintainers
     :alt: OCA/server-tools
-.. |badge3| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
+.. |badge2| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
     :target: https://translation.odoo-community.org/projects/server-tools-12-0/server-tools-12-0-addon_two_maintainers
     :alt: Translate me on Weblate
-.. |badge4| image:: https://img.shields.io/badge/runboat-Try%20me-875A7B.png
+.. |badge3| image:: https://img.shields.io/badge/runboat-Try%20me-875A7B.png
     :target: https://runboat.odoo-community.org/builds?repo=OCA/server-tools&target_branch=12.0
     :alt: Try me on Runboat
 
-|badge1| |badge2| |badge3| |badge4|
+|badge1| |badge2| |badge3|
 
 Some description
 
@@ -34,6 +31,8 @@ Some description
 
 .. contents::
    :local:
+
+
 
 Bug Tracker
 ===========
@@ -52,6 +51,7 @@ Authors
 ~~~~~~~
 
 * Acme Inc
+
 
 Maintainers
 ~~~~~~~~~~~
