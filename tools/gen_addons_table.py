@@ -27,6 +27,7 @@ import re
 import click
 
 from .gitutils import commit_if_needed
+from .gen_addon_readme import keep_coverage_badge
 
 _logger = logging.getLogger(__name__)
 
@@ -62,7 +63,7 @@ def render_maintainers(manifest):
     )
 
 
-def replace_in_readme(readme_path, header, rows_available, rows_unported):
+def replace_in_readme(readme_path, header, rows_available):
     with io.open(readme_path, encoding="utf8") as f:
         readme = f.read()
     parts = re.split(MARKERS, readme, flags=re.MULTILINE)
@@ -77,20 +78,9 @@ def replace_in_readme(readme_path, header, rows_available, rows_unported):
             [
                 "\n",
                 "\n",
-                "Available addons\n",
-                "----------------\n",
+                "Addons\n",
+                "------\n",
                 render_markdown_table(header, rows_available),
-                "\n",
-            ]
-        )
-    if rows_unported:
-        addons.extend(
-            [
-                "\n",
-                "\n",
-                "Unported addons\n",
-                "---------------\n",
-                render_markdown_table(header, rows_unported),
                 "\n",
             ]
         )
@@ -99,6 +89,28 @@ def replace_in_readme(readme_path, header, rows_available, rows_unported):
     readme = "".join(parts)
     with io.open(readme_path, "w", encoding="utf8") as f:
         f.write(readme)
+
+def get_authorship_info(addon_path, rst_file):
+    authors = ""
+    authorship_path = os.path.join(addon_path, rst_file)
+    if os.path.isfile(authorship_path):
+        with open(authorship_path) as f:
+            rst_string = f.read()
+            lines = rst_string.split("\n")
+
+            for line in lines:
+                name = re.findall(r"\* (.+) <", line)
+                email = re.findall(r"<(.+)>", line)
+                website = re.findall(r"\((.+)\)", line)
+
+                if name and email:
+                    authors += \
+                        "* [" + name[0] + "](mailto:" + email[0] + ")"
+                    if website:
+                        authors += " - [" + website[0] + "](" + website[0] + ")"
+                    authors += "<br/> "
+
+    return authors
 
 
 @click.command(help=__doc__)
@@ -119,23 +131,21 @@ def gen_addons_table(commit, readme_path, addons_dir):
     if not os.path.isfile(readme_path):
         _logger.warning("%s not found", readme_path)
         return
-    # list addons in . and __unported__
-    addon_paths = []  # list of (addon_path, unported)
-    for addon_path in os.listdir(addons_dir):
-        addon_paths.append((addon_path, False))
-    unported_directory = os.path.join(
-        "" if addons_dir == "." else addons_dir, "__unported__"
-    )
-    if os.path.isdir(unported_directory):
-        for addon_path in os.listdir(unported_directory):
-            addon_path = os.path.join(unported_directory, addon_path)
-            addon_paths.append((addon_path, True))
+    # list addons in .
+    addon_names = []  # list of (addon_path)
+    for addon_name in os.listdir(addons_dir):
+        if (addon_name not in ['.braintec', '.git', '.github', 'ext'] and
+                os.path.isdir(os.path.join(addons_dir, addon_name))):
+            addon_names.append((addon_name, False))
+    addon_paths = []
+    for addon_name in addon_names:
+        addon_path = os.path.join(addons_dir, addon_name[0])
+        addon_paths.append(addon_path)
     addon_paths = sorted(addon_paths, key=lambda x: x[0])
     # load manifests
-    header = ("addon", "version", "maintainers", "summary")
+    header = ("Addon", "Version", "Original Authors", "Contributors", "Summary", "Coverage")
     rows_available = []
-    rows_unported = []
-    for addon_path, unported in addon_paths:
+    for addon_path in addon_paths:
         for manifest_file in MANIFESTS:
             manifest_path = os.path.join(addon_path, manifest_file)
             has_manifest = os.path.isfile(manifest_path)
@@ -145,31 +155,22 @@ def gen_addons_table(commit, readme_path, addons_dir):
             with open(manifest_path) as f:
                 manifest = ast.literal_eval(f.read())
             addon_name = os.path.basename(addon_path)
-            link = "[%s](%s/)" % (addon_name, addon_path)
+            link = f"[{addon_name}](./{addon_name}/)"
             version = manifest.get("version") or ""
             summary = manifest.get("summary") or manifest.get("name")
             summary = sanitize_cell(summary)
             installable = manifest.get("installable", True)
-            if unported and installable:
-                _logger.warning(
-                    "%s is in __unported__ but is marked " "installable." % addon_path
-                )
-                installable = False
             if installable:
+                original_authors = get_authorship_info(addon_path, 'readme/ORIGINAL_AUTHORS.rst')
+                contributors = get_authorship_info(addon_path, 'readme/CONTRIBUTORS.rst')
+                coverage_badge = keep_coverage_badge(addon_path, addon_name)
                 rows_available.append(
-                    (link, version, render_maintainers(manifest), summary)
+                    (link, version, original_authors, contributors, summary,
+                     '![Coverage](%s)' % coverage_badge[0] if coverage_badge else "")
                 )
-            else:
-                rows_unported.append(
-                    (
-                        link,
-                        version + " (unported)",
-                        render_maintainers(manifest),
-                        summary,
-                    )
-                )
+
     # replace table in README.md
-    replace_in_readme(readme_path, header, rows_available, rows_unported)
+    replace_in_readme(readme_path, header, rows_available)
     if commit:
         commit_if_needed(
             [readme_path],
