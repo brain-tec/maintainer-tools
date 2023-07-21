@@ -76,7 +76,7 @@ def download_icon():
     help="Download and add the braintec logo as app icon. "
          "If --add-bt-icon is set, it will override the --src-icon option.",
 )
-def gen_addon_icon(addon_dirs, addons_dir, src_icon, commit):
+def gen_addon_icon(addon_dirs, addons_dir, src_icon, commit, add_bt_icon):
     """Put default OCA icon of type ICON_TYPE.
 
     Do nothing if the icon already exists in ICONS_DIR, otherwise put
