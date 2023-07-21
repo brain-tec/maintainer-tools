@@ -206,12 +206,12 @@ def generate_fragment(org_name, repo_name, branch, addon_name, file):
         if path.startswith("http"):
             # It is already an absolute path
             continue
-        elif path.startswith('../static/description/'):
+        elif path.startswith("../static/description/"):
             # RST files inside readme need the image path as ../static/description/
             # Here the global README needs it as ./static/description/
             # Finally the index file needs that as ../description,
             # but this change will be done in gen_one_addon_index function
-            fragment_lines[index] = fragment_lines[index].replace('../', './')
+            fragment_lines[index] = fragment_lines[index].replace("../", "./")
         else:
             # remove '../' if exists that make the fragment working
             # on github interface, in the 'readme' subfolder
@@ -328,7 +328,7 @@ def gen_one_addon_index(readme_filename):
 
     # Change image path from './static/description/' to '../description/'
     # as README.rst need the first relative path, whilst the index.html the second one
-    index = re.sub(rb'\./static/description/', rb'../description/', index)
+    index = re.sub(rb"\./static/description/", rb"../description/", index)
 
     # remove the docutils version from generated html, to avoid
     # useless changes in the readme
