@@ -155,7 +155,7 @@ def gen_addons_table(commit, readme_path, addons_dir):
             with open(manifest_path) as f:
                 manifest = ast.literal_eval(f.read())
             addon_name = os.path.basename(addon_path)
-            link = "[%s](%s/)" % (addon_name, addon_path)
+            link = f"[{addon_name}](./{addon_name}/)"
             version = manifest.get("version") or ""
             summary = manifest.get("summary") or manifest.get("name")
             summary = sanitize_cell(summary)
