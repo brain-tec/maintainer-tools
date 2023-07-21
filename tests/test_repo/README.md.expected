@@ -9,11 +9,11 @@ ${REPO_DESCRIPTION}
 
 [//]: # (addons)
 
-Available Addons
-----------------
-Addon | Version | Original Authors | Contributors | Summary
---- | --- | --- | --- | ---
-[module1](./module1/) | 8.0.1.0.0 |  |  | Module 1 summary
+Addons
+------
+Addon | Version | Original Authors | Contributors | Summary | Coverage
+--- | --- | --- | --- | --- | ---
+[module1](./module1/) | 8.0.1.0.0 |  |  | Module 1 summary |
 
 [//]: # (end addons)
 

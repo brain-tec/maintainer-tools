@@ -27,6 +27,7 @@ import re
 import click
 
 from .gitutils import commit_if_needed
+from .gen_addon_readme import keep_coverage_badge
 
 _logger = logging.getLogger(__name__)
 
@@ -77,8 +78,8 @@ def replace_in_readme(readme_path, header, rows_available):
             [
                 "\n",
                 "\n",
-                "Available Addons\n",
-                "----------------\n",
+                "Addons\n",
+                "------\n",
                 render_markdown_table(header, rows_available),
                 "\n",
             ]
@@ -142,7 +143,7 @@ def gen_addons_table(commit, readme_path, addons_dir):
         addon_paths.append(addon_path)
     addon_paths = sorted(addon_paths, key=lambda x: x[0])
     # load manifests
-    header = ("Addon", "Version", "Original Authors", "Contributors", "Summary")
+    header = ("Addon", "Version", "Original Authors", "Contributors", "Summary", "Coverage")
     rows_available = []
     for addon_path in addon_paths:
         for manifest_file in MANIFESTS:
@@ -162,8 +163,10 @@ def gen_addons_table(commit, readme_path, addons_dir):
             if installable:
                 original_authors = get_authorship_info(addon_path, 'readme/ORIGINAL_AUTHORS.rst')
                 contributors = get_authorship_info(addon_path, 'readme/CONTRIBUTORS.rst')
+                coverage_badge = keep_coverage_badge(addon_path, addon_name)
                 rows_available.append(
-                    (link, version, original_authors, contributors, summary)
+                    (link, version, original_authors, contributors, summary,
+                     '![Coverage](%s)' % coverage_badge[0] if coverage_badge else "")
                 )
 
     # replace table in README.md
