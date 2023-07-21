@@ -38,8 +38,10 @@ def gen_one_addon_icon(icon_dir, src_icon=None, filetype=ICON_TYPE):
 
 
 def download_icon():
-    url = "https://raw.githubusercontent.com/brain-tec/static/master/img/" \
-          "braintec_app_icon.png"
+    url = (
+        "https://raw.githubusercontent.com/brain-tec/static/master/img/"
+        "braintec_app_icon.png"
+    )
     request = requests.get(url)
     request.raise_for_status()
 
@@ -74,7 +76,7 @@ def download_icon():
     "--add-bt-icon",
     is_flag=True,
     help="Download and add the braintec logo as app icon. "
-         "If --add-bt-icon is set, it will override the --src-icon option.",
+    "If --add-bt-icon is set, it will override the --src-icon option.",
 )
 def gen_addon_icon(addon_dirs, addons_dir, src_icon, commit, add_bt_icon):
     """Put default OCA icon of type ICON_TYPE.

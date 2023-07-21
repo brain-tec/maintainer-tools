@@ -60,7 +60,7 @@ LICENSE_BADGES = {
         "https://www.odoo.com/documentation/user/13.0/legal/licenses/"
         "licenses.html#odoo-apps",
         "License: OPL-1",
-    )
+    ),
 }
 
 DEVELOPMENT_STATUS_BADGES = {
@@ -140,42 +140,51 @@ def make_repo_badge(org_name, repo_name, branch, addon_name):
         "{org_name}/{repo_name}".format(**locals()),
     )
 
+
 def keep_coverage_badge(addon_dir, addon_name):
     module_readme_path = "{}/README.rst".format(addon_dir)
     if not os.path.exists(module_readme_path):
-        print("README file for module {} not found {}".format(addon_name, module_readme_path))
+        print(
+            "README file for module {} not found {}".format(
+                addon_name, module_readme_path
+            )
+        )
     else:
         with open(module_readme_path, "r") as f:
             module_readme_content = f.read()
 
-        pattern = r'\.\. \|badge3\| image:: (.+)\n\s+:alt: (.+)'
+        pattern = r"\.\. \|badge3\| image:: (.+)\n\s+:alt: (.+)"
         match = re.search(pattern, module_readme_content)
 
         if match:
             image = match.group(1)
             alt = match.group(2)
-            return (
-                image.format(**locals()),
-                False,
-                alt.format(**locals())
-            )
+            return (image.format(**locals()), False, alt.format(**locals()))
     return False
+
 
 def keep_coverage_trend(addon_dir, addon_name):
     module_readme_path = "{}/README.rst".format(addon_dir)
     if not os.path.exists(module_readme_path):
-        print("README file for module {} not found {}".format(addon_name, module_readme_path))
+        print(
+            "README file for module {} not found {}".format(
+                addon_name, module_readme_path
+            )
+        )
     else:
         with open(module_readme_path, "r") as f:
             module_readme_content = f.read()
 
-        image_block_pattern = re.compile(r'(\.\. image:: (https://quickchart\.io/chart.*?)\n   \:height: \d+)',
-                                         re.DOTALL)
+        image_block_pattern = re.compile(
+            r"(\.\. image:: (https://quickchart\.io/chart.*?)\n   \:height: \d+)",
+            re.DOTALL,
+        )
         match = image_block_pattern.search(module_readme_content)
         if match:
             print(match.group())
             return match.group()
     return False
+
 
 def generate_fragment(org_name, repo_name, branch, addon_name, file):
     fragment_lines = file.readlines()
@@ -276,7 +285,7 @@ def gen_one_addon_readme(
                 repo_name=repo_name,
                 development_status=development_status,
                 source_digest=source_digest,
-                coverage_trend=coverage_trend
+                coverage_trend=coverage_trend,
             )
         )
 
@@ -369,7 +378,7 @@ def _source_digest_match(readme_filename, source_digest):
 @click.option(
     "--add-bt-icon",
     is_flag=True,
-    help="Download and add the braintec logo as app icon."
+    help="Download and add the braintec logo as app icon.",
 )
 @click.pass_context
 def gen_addon_readme(
@@ -392,13 +401,18 @@ def gen_addon_readme(
     fragments (DESCRIPTION.rst, USAGE.rst, etc) and the addon manifest.
     """
 
-    if org_name == 'braintec':
-        org_name = 'brain-tec'
+    if org_name == "braintec":
+        org_name = "brain-tec"
 
     if add_bt_icon:
         ctx.invoke(
-            gen_addon_icon, addon_dirs=addon_dirs, addons_dir=addons_dir,
-            src_icon=False, commit=commit, add_bt_icon=add_bt_icon)
+            gen_addon_icon,
+            addon_dirs=addon_dirs,
+            addons_dir=addons_dir,
+            src_icon=False,
+            commit=commit,
+            add_bt_icon=add_bt_icon,
+        )
 
     addons = []
     if addons_dir:
