@@ -21,7 +21,9 @@
 
 {% for (image, target, alt) in badges -%}
 .. |badge{{ loop.index }}| image:: {{ image }}
+    {%- if target %}
     :target: {{ target or '#' }}
+    {%- endif %}
     {%- if alt %}
     :alt: {{ alt }}
     {%- endif %}
@@ -49,6 +51,15 @@
 {{- fragment('DEVELOP', 'Development') }}
 {{- fragment('ROADMAP', 'Known issues / Roadmap') -}}
 {{- fragment('HISTORY', 'Changelog') -}}
+
+{% if coverage_trend -%}
+Coverage Trend
+==============
+
+{{ coverage_trend }}
+
+{%- endif %}
+
 Bug Tracker
 ===========
 
@@ -71,10 +82,28 @@ Authors
 {% endfor %}
 {% endif -%}
 
+{{ fragment('ORIGINAL_AUTHORS', 'Original Authors', sub='~') }}
 {{ fragment('CONTRIBUTORS', 'Contributors', sub='~') }}
 {{- fragment('CREDITS', 'Other credits', sub='~') -}}
 Maintainers
 ~~~~~~~~~~~
+{%- if org_name == 'brain-tec' %}
+
+This module is maintained by braintec.
+
+.. image:: https://raw.githubusercontent.com/brain-tec/static/master/img/braintec_logo_readme.png
+   :alt: braintec
+   :width: 150px
+   :target: https://braintec.com
+
+As Odoo Gold Partner and Best Partner Europe 2016, 2020, 2021, we develop business software solutions that are
+high-value and efficient.
+
+Our 70 highly qualified employees are represented at nine locations in Switzerland, Germany, Austria and Spain.
+With our experience, methodology and the most certified Odoo experts worldwide, we have successfully supported
+over 300 companies in their digital transformation since 2000.
+{%- endif %}
+
 {%- if org_name == 'OCA' %}
 
 This module is maintained by the OCA.

@@ -14,6 +14,7 @@ from jinja2 import Template
 from .gitutils import commit_if_needed
 from .manifest import get_manifest_path, read_manifest, find_addons, NoManifestFound
 from ._hash import hash
+from .gen_addon_icon import gen_addon_icon
 
 if sys.version_info[0] < 3:
     # python 2 import
@@ -32,6 +33,7 @@ FRAGMENTS = (
     "USAGE",
     "ROADMAP",
     "DEVELOP",
+    "ORIGINAL_AUTHORS",
     "CONTRIBUTORS",
     "CREDITS",
     "HISTORY",
@@ -53,6 +55,12 @@ LICENSE_BADGES = {
         "http://www.gnu.org/licenses/gpl-3.0-standalone.html",
         "License: GPL-3",
     ),
+    "OPL-1": (
+        "https://img.shields.io/badge/license-OPL--1-blue",
+        "https://www.odoo.com/documentation/user/13.0/legal/licenses/"
+        "licenses.html#odoo-apps",
+        "License: OPL-1",
+    )
 }
 
 DEVELOPMENT_STATUS_BADGES = {
@@ -132,6 +140,42 @@ def make_repo_badge(org_name, repo_name, branch, addon_name):
         "{org_name}/{repo_name}".format(**locals()),
     )
 
+def keep_coverage_badge(addon_dir, addon_name):
+    module_readme_path = "{}/README.rst".format(addon_dir)
+    if not os.path.exists(module_readme_path):
+        print("README file for module {} not found {}".format(addon_name, module_readme_path))
+    else:
+        with open(module_readme_path, "r") as f:
+            module_readme_content = f.read()
+
+        pattern = r'\.\. \|badge3\| image:: (.+)\n\s+:alt: (.+)'
+        match = re.search(pattern, module_readme_content)
+
+        if match:
+            image = match.group(1)
+            alt = match.group(2)
+            return (
+                image.format(**locals()),
+                False,
+                alt.format(**locals())
+            )
+    return False
+
+def keep_coverage_trend(addon_dir, addon_name):
+    module_readme_path = "{}/README.rst".format(addon_dir)
+    if not os.path.exists(module_readme_path):
+        print("README file for module {} not found {}".format(addon_name, module_readme_path))
+    else:
+        with open(module_readme_path, "r") as f:
+            module_readme_content = f.read()
+
+        image_block_pattern = re.compile(r'(\.\. image:: (https://quickchart\.io/chart.*?)\n   \:height: \d+)',
+                                         re.DOTALL)
+        match = image_block_pattern.search(module_readme_content)
+        if match:
+            print(match.group())
+            return match.group()
+    return False
 
 def generate_fragment(org_name, repo_name, branch, addon_name, file):
     fragment_lines = file.readlines()
@@ -192,13 +236,17 @@ def gen_one_addon_readme(
                 if fragment:
                     fragments[fragment_name] = fragment
     badges = []
-    development_status = manifest.get("development_status", "Beta").lower()
+    development_status = manifest.get("development_status", "").lower()
     if development_status in DEVELOPMENT_STATUS_BADGES:
         badges.append(DEVELOPMENT_STATUS_BADGES[development_status])
     license = manifest.get("license")
     if license in LICENSE_BADGES:
         badges.append(LICENSE_BADGES[license])
     badges.append(make_repo_badge(org_name, repo_name, branch, addon_name))
+    coverage_badge = keep_coverage_badge(addon_dir, addon_name)
+    if coverage_badge:
+        badges.append(coverage_badge)
+    coverage_trend = keep_coverage_trend(addon_dir, addon_name)
     if org_name == "OCA":
         badges.append(make_weblate_badge(repo_name, branch, addon_name))
     if org_name == "OCA":
@@ -228,6 +276,7 @@ def gen_one_addon_readme(
                 repo_name=repo_name,
                 development_status=development_status,
                 source_digest=source_digest,
+                coverage_trend=coverage_trend
             )
         )
 
@@ -317,7 +366,14 @@ def _source_digest_match(readme_filename, source_digest):
     ),
     help="Template file to use.",
 )
+@click.option(
+    "--add-bt-icon",
+    is_flag=True,
+    help="Download and add the braintec logo as app icon."
+)
+@click.pass_context
 def gen_addon_readme(
+    ctx,
     org_name,
     repo_name,
     branch,
@@ -327,6 +383,7 @@ def gen_addon_readme(
     gen_html,
     template_filename,
     if_fragments_changed,
+    add_bt_icon,
 ):
     """Generate README.rst from fragments.
 
@@ -334,6 +391,15 @@ def gen_addon_readme(
     existing README.rst with content generated from the template,
     fragments (DESCRIPTION.rst, USAGE.rst, etc) and the addon manifest.
     """
+
+    if org_name == 'braintec':
+        org_name = 'brain-tec'
+
+    if add_bt_icon:
+        ctx.invoke(
+            gen_addon_icon, addon_dirs=addon_dirs, addons_dir=addons_dir,
+            src_icon=False, commit=commit, add_bt_icon=add_bt_icon)
+
     addons = []
     if addons_dir:
         addons.extend(find_addons(addons_dir))
