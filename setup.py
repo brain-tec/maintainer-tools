@@ -27,17 +27,23 @@ setuptools.setup(
         "docutils",
         "pypandoc",  # for oca-gen-addon-readme to work with markdown fragments
         "ERPpeek",
+        "freezegun",
         "github3.py>=1",
         "jinja2",
+        "manifestoo-core>=1.1",
         "PyYAML",
         "polib",
         "pygments",
         "requests",
         "toml>=0.10.0",  # for oca-towncrier
+        "tomli ; python_version < '3.11'",  # from 3.11 tomllib is in stdlib
         "towncrier>=21.3",  # for oca-towncrier
         "selenium",
         "twine",
         "wheel",
+        "pyproject_dependencies ; python_version>='3.7'",
+        "setuptools-odoo",  # for oca-gen-external-dependencies
+        "whool",  # for oca-gen-external-dependencies
     ],
     python_requires=">=3.6",
     classifiers=[
@@ -64,6 +70,8 @@ setuptools.setup(
             "oca-publish-modules = tools.publish_modules:main",
             "oca-gen-addon-readme = tools.gen_addon_readme:gen_addon_readme",
             "oca-gen-addon-icon = tools.gen_addon_icon:gen_addon_icon",
+            "oca-gen-external-dependencies = tools.gen_external_dependencies:main",
+            "oca-gen-metapackage = tools.gen_metapackage:main",
             "oca-towncrier = tools.oca_towncrier:oca_towncrier",
             "oca-create-migration-issue = tools.create_migration_issue:main",
             "oca-update-pre-commit-excluded-addons = "
