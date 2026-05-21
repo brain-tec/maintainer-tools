@@ -403,7 +403,7 @@ def check_rst(readme_filename):
         )
 
 
-def gen_one_addon_index(readme_filename):
+def gen_one_addon_index(readme_filename, addon_title=None):
     addon_dir = os.path.dirname(readme_filename)
     index_dir = os.path.join(addon_dir, "static", "description")
     index_filename = os.path.join(index_dir, "index.html")
@@ -414,11 +414,14 @@ def gen_one_addon_index(readme_filename):
                 return
     if not os.path.isdir(index_dir):
         os.makedirs(index_dir)
+    settings = dict(RST2HTML_SETTINGS)
+    if addon_title:
+        settings["title"] = addon_title
     publish_file(
         source_path=readme_filename,
         destination_path=index_filename,
         writer_name="html4css1",
-        settings_overrides=RST2HTML_SETTINGS,
+        settings_overrides=settings,
     )
     with open(index_filename, "rb") as f:
         index = f.read()
@@ -577,7 +580,9 @@ def gen_addon_readme(
         if gen_html:
             if not manifest.get("preloadable", True):
                 continue
-            index_filename = gen_one_addon_index(readme_filename)
+            index_filename = gen_one_addon_index(
+                readme_filename, addon_title=manifest.get("name")
+            )
             if index_filename:
                 readme_filenames.append(index_filename)
     if commit:
