@@ -83,12 +83,14 @@ Authors
 {% endfor %}
 {% endif -%}
 
+{% if has_braintec_author -%}
 {{ fragment('ORIGINAL_AUTHORS', 'Original Authors', sub=level3_underline) }}
+{% endif -%}
 {{ fragment('CONTRIBUTORS', 'Contributors', sub=level3_underline) }}
 {{- fragment('CREDITS', 'Other credits', sub=level3_underline) -}}
 Maintainers
 {{ level3_underline * 11 }}
-{%- if org_name == 'brain-tec' %}
+{%- if has_braintec_author %}
 
 This module is maintained by braintec.
 
