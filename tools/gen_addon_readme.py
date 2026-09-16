@@ -418,10 +418,17 @@ def gen_one_addon_readme(
     if license in LICENSE_BADGES:
         badges.append(LICENSE_BADGES[license])
     badges.append(make_repo_badge(org_name, repo_name, branch, addon_name))
-    coverage_badge = keep_coverage_badge(addon_dir, addon_name)
-    if coverage_badge:
-        badges.append(coverage_badge)
-    coverage_trend = keep_coverage_trend(addon_dir, addon_name)
+
+    author = manifest.get("author", "")
+    has_braintec_author = "braintec" in author.casefold() or "brain-tec" in author.casefold()
+    if has_braintec_author:
+        coverage_badge = keep_coverage_badge(addon_dir, addon_name)
+        if coverage_badge:
+            badges.append(coverage_badge)
+        coverage_trend = keep_coverage_trend(addon_dir, addon_name)
+    else:
+        coverage_trend = False
+
     if org_name == "OCA":
         badges.append(make_weblate_badge(repo_name, branch, addon_name))
     if org_name == "OCA":
@@ -446,6 +453,7 @@ def gen_one_addon_readme(
                 badges=badges,
                 branch=branch,
                 fragments=fragments,
+                has_braintec_author=has_braintec_author,
                 manifest=manifest,
                 org_name=org_name,
                 repo_name=repo_name,
